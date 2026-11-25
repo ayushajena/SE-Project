@@ -1,0 +1,36 @@
+DOCUMENT CONTROL: BANKING COMPLIANCE & TECHNICAL STANDARDS (RBI-SPEC-2026-v1)
+DOMAIN: Commercial Banking - Enterprise Loan Approval & Risk Engine (India)
+
+1. STATUTORY COMPLIANCE & REGULATORY MANDATES (RESERVE BANK OF INDIA)
+1.1 RBI Master Direction - Know Your Customer (KYC) & AML Norms
+- Pursuant to RBI KYC Master Directions, all commercial loan applications with requested credit limits exceeding INR 10,00,000 must undergo mandatory, automated identity verification (Central KYC / CKYC).
+- Applicant entities, directors, and Ultimate Beneficial Owners (UBOs) must be dynamically screened against RBI Defaulter Lists, SEBI Debarred Lists, and MHA Sanction Watchlists prior to credit scoring.
+
+1.2 RBI Digital Lending Guidelines & Fair Practices Code
+- Automated credit scoring algorithms must maintain complete explainability and transparency.
+- If an application is rejected or subjected to elevated interest rates, the system must automatically generate explicit Key Fact Statements (KFS) and adverse action notices detailing the mathematical risk metrics used.
+
+1.3 Information Technology Act (2000) & RBI Cyber Security Framework for Banks
+- All applicant financial records, GST returns, ITR filings, and Aadhaar/PAN identifiers must be encrypted using AES-256 at rest and TLS 1.3 in transit.
+- Personally Identifiable Information (PII) must be masked across non-production environments and stored in compliance with Indian Data Localisation mandates.
+
+1.4 Governance, Auditability & Lineage (RBI Audit Mandates)
+- The system must implement an immutable, write-once-read-many (WORM) audit log detailing every risk score calculation, rule evaluation, system decision, and manual credit officer override.
+- Audit logs must be retained for a mandatory statutory period of ten (10) years and be made available for RBI regulatory compliance inspections.
+
+2. CORE SYSTEM ARCHITECTURE & INTEGRATION CONSTRAINTS
+2.1 Legacy Core-Banking & Fintech Interoperability
+- The system must maintain real-time REST/SOAP API integration with legacy Core Banking Systems (CBS) and NPCI/Account Aggregator networks to pull applicant account balances, GSTIN data, and transaction histories.
+- Legacy system timeouts must handle retries gracefully without duplicating transaction records or risk scores.
+
+2.2 Multi-Tier Approval Workflows
+- Automated approval is restricted to low-risk applications under INR 50,00,000.
+- Applications between INR 50,00,000 and INR 5,00,00,000 require dual-control sign-off from a Senior Credit Officer.
+- High-risk applications exceeding INR 5,00,00,000 or failing automated KYC screening must be escalated to the Executive Risk Management Committee.
+
+2.3 Calculation Integrity & Operational Reliability
+- High availability is mandated (99.99% uptime) with zero tolerance for calculation discrepancies in interest compounding, Debt Service Coverage Ratio (DSCR), or Risk-Weighted Assets (RWA).
+
+2.4 Bank Capital & Exposure Concentration Limits (RBI Large Exposures Framework)
+- Before sanctioning any corporate loan, the system must aggregate the bank's existing credit commitments to the applicant and its connected group entities against real-time Tier-1 capital availability.
+- Applications that breach RBI single-borrower (20% of Tier-1 capital) or group-borrower (25% of Tier-1 capital) concentration caps must be automatically blocked to prevent systemic risk accumulation.

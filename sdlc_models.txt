@@ -1,0 +1,38 @@
+================================================================================
+SDLC MODEL SELECTION MATRIX & DECISION RULES
+================================================================================
+
+1. EVALUATION CATEGORIES
+SDLC selection evaluates four core project characteristic categories:
+  A. Requirements Characteristics (Definition clarity, early definition, stability/change frequency, need for visual demonstration/proof-of-concept)
+  B. Project Team Characteristics (Familiarity with problem domain, technology domain, and tools; reassignment risk; availability of training)
+  C. User Community Characteristics (Availability during lifecycle, familiarity with system definition, domain expertise, desire for phase-by-phase involvement)
+  D. Project Type & Risk (New product direction vs. enhancement, system integration complexity, funding stability, expected product longevity in the organization)
+
+--------------------------------------------------------------------------------
+2. CANONICAL SDLC SELECTION DECISION RULES (6 ALLOWED MODELS)
+--------------------------------------------------------------------------------
+
+1. Waterfall Model
+- Criteria Profile: Requirements are easily defined early and rarely change (No proof-of-concept needed). Team is familiar with problem domain and not reassigned, but lacks training for new tools. User availability is restricted and users do not want involvement across all phases. Not a system integration project or enhancement; funding is stable and product has a long expected life.
+- Decision Rule: Best when requirement volatility is low, system integration is minimal, and formal sequential sign-offs are sufficient.
+
+2. V-Shaped Model (Verification and Validation Model)
+- Criteria Profile: Requirements are well-known, defined early, and stable (No prototype/proof-of-concept needed). Team knows the problem domain, is not subject to reassignment, and has training available for new technology/tools. User representatives are domain-guided with restricted availability during build, while funding is stable and product longevity is high. Crucially, unlike Waterfall, V-Shaped handles System Integration projects and enhancements with strict verification needs.
+- Decision Rule: Best for high-regulation, zero-tolerance financial/integration systems where verification and validation planning (Requirements Traceability Matrix, Unit/Integration/System/UAT test plans) must run concurrently with requirements and design phases.
+
+3. Prototyping Model
+- Criteria Profile: Requirements are NOT easily defined early, change often, and require visual demonstration/proof-of-concept. Team is new to the problem domain and subject to reassignment without training. Users are new to system definition, are domain experts, and want active involvement across all phases. Short product life, not an enhancement.
+- Decision Rule: Best when high requirement/UI uncertainty requires early visual mockups before committing to architecture.
+
+4. Incremental / Iterative Model
+- Criteria Profile: Requirements can be defined early and are stable, but users are new to system definition and want phased involvement. Team is familiar with tools, has training available, and handles enhancements or new directions with phased funding.
+- Decision Rule: Best when a large system can be safely decomposed into independent, staged functional releases without compromising core architectural or regulatory integrity.
+
+5. Rapid Application Development (RAD)
+- Criteria Profile: Requirements are well-known early and stable, though proof-of-concept demos are used. Team is experienced in problem domain, technology, and tools with training available and no reassignment. Users are domain experts available throughout all phases. Short-to-medium product longevity, stable funding, and component reuse.
+- Decision Rule: Best for tight delivery schedules in well-understood domains where reusable components and continuous user workshops accelerate delivery.
+
+6. Spiral Model
+- Criteria Profile: Requirements are unclear early, change frequently, and require prototypes/proof-of-concept. Team is new to problem domain, technology, and tools with no training and high reassignment risk. Represents a new product direction with unstable/phased funding, system integration complexity, and high risk.
+- Decision Rule: Best when high technical/business uncertainty requires continuous, phase-by-phase quantitative risk analysis and iterative prototyping.
