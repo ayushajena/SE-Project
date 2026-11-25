@@ -18,6 +18,6 @@ Commercial banks evaluating corporate and MSME loan applications must simultaneo
 2. Run the application:
    `python -m streamlit run app.py`
 
-3. Enter your Gemini API Key in the left sidebar and start defining your loan origination system scenario to **Agent 1**.
+3. Enter your Gemini API Key in the left sidebar and start defining your loan origination system scenario to **Agent 1 via prompts**.
 
 4. Click **Finalize Requirements & Deduce SDLC Model (Agent 2)** to recommend the most suitable model and justify the choice (automatically persisted to `se_project.db`).
