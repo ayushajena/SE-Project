@@ -1,5 +1,5 @@
 # Agentic AI Requirements Engineering & SDLC Model Selection Engine
-### Domain: Automated Commercial Loan Origination & Credit Risk Management (India)
+## For Automated Commercial Loan Origination & Credit Risk Management System
 
 A multi-agent Software Engineering system built with Streamlit and Google Gemini that automates **IEEE 830 Software Requirements Specification (SRS)** extraction and **SDLC Model Selection** for Indian commercial banking loan origination systems.
 
