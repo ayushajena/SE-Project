@@ -16,6 +16,7 @@ st.markdown("""
     <style>
         .stAppDeployButton {display: none;}
         [data-testid="stStatusWidget"] {visibility: hidden;}
+        [data-testid="stHeaderActionElements"] {display: none;}
         header[data-testid="stHeader"] {background: transparent;}
     </style>
 """, unsafe_allow_html=True)
@@ -121,6 +122,7 @@ if st.sidebar.button("🔄 Reset Conversation / New Session"):
     st.session_state.messages = []
     st.session_state.final_srs = ""
     st.session_state.sdlc_result = ""
+    st.session_state.is_finalized = False
     st.rerun()
 
 if st.sidebar.checkbox("View Database Audit Logs"):
@@ -148,6 +150,8 @@ if "final_srs" not in st.session_state:
     st.session_state.final_srs = ""
 if "sdlc_result" not in st.session_state:
     st.session_state.sdlc_result = ""
+if "is_finalized" not in st.session_state:
+    st.session_state.is_finalized = False
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -156,9 +160,15 @@ for message in st.session_state.messages:
 # -------------------------------------------------------------
 # 6. AGENT 1: CONVERSATIONAL REQUIREMENTS ENGINEERING
 # -------------------------------------------------------------
-user_input = st.chat_input("Provide loan system scenario or refine requirements (Agent 1)...")
 
-if user_input:
+chat_placeholder = (
+    "Session finalized. Reset conversation to start a new session."
+    if st.session_state.is_finalized
+    else "Provide loan system scenario or refine requirements (Agent 1)..."
+)
+user_input = st.chat_input(chat_placeholder, disabled=st.session_state.is_finalized)
+
+if user_input and not st.session_state.is_finalized:
     if not api_key:
         st.error("Please enter a valid Gemini API Key in the sidebar.")
     else:
@@ -249,7 +259,7 @@ if user_input:
 st.divider()
 st.subheader("Suitable SDLC Model Selection")
 
-if st.button("🚀 Finalize Requirements & Deduce SDLC Model (Agent 2)"):
+if st.button("🚀 Finalize Requirements & Deduce SDLC Model (Agent 2)", disabled=st.session_state.is_finalized):
     if not api_key:
         st.error("Please enter a valid Gemini API Key in the sidebar.")
     elif not st.session_state.final_srs:
@@ -299,8 +309,10 @@ if st.button("🚀 Finalize Requirements & Deduce SDLC Model (Agent 2)"):
                 agent2_response = call_gemini_resilient(client, agent2_prompt, agent2_system_instruction)
 
                 st.session_state.sdlc_result = agent2_response
+                st.session_state.is_finalized = True
                 log_to_db("Agent_2_SDLC_Engine", agent2_prompt, agent2_response)
                 save_artifact_to_db(st.session_state.final_srs, agent2_response)
+                st.rerun()
 
             except Exception as e:
                 st.error(f"Execution Error: {e}")
