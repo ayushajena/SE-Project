@@ -142,7 +142,7 @@ if st.sidebar.checkbox("View Database Audit Logs"):
 # 5. MAIN INTERFACE HEADER
 # -------------------------------------------------------------
 st.title("Agentic AI Requirements Engineering & SDLC Model Selection Engine")
-st.caption("Grounded in RBI Master Directions & SDLC Selection Decision Matrices")
+st.caption("Grounded in RBI Master Directions & SDLC Selection Decision Criteria")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
