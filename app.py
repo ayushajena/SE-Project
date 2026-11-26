@@ -121,6 +121,7 @@ api_key = st.sidebar.text_input("Enter Gemini API Key", type="password")
 if st.sidebar.button("🔄 Reset Conversation / New Session"):
     st.session_state.messages = []
     st.session_state.final_srs = ""
+    st.session_state.ieee_srs = ""
     st.session_state.sdlc_result = ""
     st.session_state.is_finalized = False
     st.rerun()
@@ -148,6 +149,8 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "final_srs" not in st.session_state:
     st.session_state.final_srs = ""
+if "ieee_srs" not in st.session_state:
+    st.session_state.ieee_srs = ""
 if "sdlc_result" not in st.session_state:
     st.session_state.sdlc_result = ""
 if "is_finalized" not in st.session_state:
@@ -257,14 +260,72 @@ if user_input and not st.session_state.is_finalized:
 # 7. AGENT 2: TRIGGERED SDLC SELECTION & ARCHITECTURE
 # -------------------------------------------------------------
 st.divider()
-st.subheader("Suitable SDLC Model Selection")
+st.subheader("SRS Finalization & SDLC Model Selection")
 
-if st.button("🚀 Finalize Requirements & Deduce SDLC Model (Agent 2)", disabled=st.session_state.is_finalized):
+if st.button("🔴 Compile SRS (Agent 1) & Deduce SDLC Model (Agent 2)", disabled=st.session_state.is_finalized):
     if not api_key:
         st.error("Please enter a valid Gemini API Key in the sidebar.")
     elif not st.session_state.final_srs:
         st.warning("Please interact with Agent 1 first to establish requirements before running Agent 2.")
     else:
+        agent1_compile_instruction = f"""
+        You are an expert Software Requirements Engineering Agent specializing in Indian Financial Systems (RBI Guidelines & IT Act 2000).
+        Synthesize all gathered requirements and conversation history into a formal, complete **IEEE 830-1998 Software Requirements Specification (SRS)** document.
+
+        Grounded Knowledge Base (Domain Regulations RAG):
+        ---
+        {finance_kb}
+        ---
+
+        STRICT OUTPUT FORMAT RULES:
+        - Follow the exact IEEE 830-1998 section hierarchy below using Markdown headings (`###` for top-level sections, `####` for subsections).
+        - Do NOT include conversational chatter, intro/outro text, or clarification questions.
+        - Output ONLY these exact sections in order:
+
+          ### 1. Introduction
+          #### 1.1 Purpose
+          *(Describe the purpose of the Commercial Loan Origination & Credit Risk Management system and its intended audience: bank credit officers, risk committees, developers, testers, and RBI auditors.)*
+          #### 1.2 Scope
+          *(Define what the software system will and will not do, including currency/domain boundaries.)*
+          #### 1.3 Definitions, Acronyms, and Abbreviations
+          *(Define key domain/regulatory terms used in the SRS such as CBS, CKYC, LEF, KFS, WORM, DSCR, RWA, etc.)*
+          #### 1.4 References
+          *(List all referenced RBI Master Directions, IT Act 2000 sections, and statutory guidelines cited from the RAG knowledge base.)*
+          #### 1.5 Overview
+          *(Briefly describe how the rest of this SRS document is organized.)*
+
+          ### 2. Overall Description
+          #### 2.1 Product Perspective
+          *(Describe the system context within the bank's IT ecosystem and high-level interfaces with CBS, credit bureaus, and Account Aggregators.)*
+          #### 2.2 Product Functions
+          *(Summarize the major functional capabilities at a high level.)*
+          #### 2.3 User Characteristics
+          *(Describe the user classes—Applicants, Credit Officers, Senior Managers, Risk Committee, Auditors—and their roles/technical expertise.)*
+          #### 2.4 Constraints
+          *(Consolidate all CON-XX items: database/tech stack mandates, Indian data localization, and statutory retention rules.)*
+          #### 2.5 Assumptions and Dependencies
+          *(State operational assumptions and external API/infrastructure dependencies.)*
+
+          ### 3. Specific Requirements
+          #### 3.1 External Interfaces
+          *(Detail all EI-XX items: user interfaces, CBS APIs, credit bureau APIs, and GSTN/Account Aggregator interfaces with inputs/outputs.)*
+          #### 3.2 Functional Requirements
+          *(Detail every FR-XX item systematically with Description, Inputs, Processing Logic, Outputs, and Regulatory/Stakeholder Source.)*
+          #### 3.3 Performance Requirements
+          *(Specify latency, throughput, and availability metrics from NFRs.)*
+          #### 3.4 Logical Database Requirements
+          *(Specify key data entities, ACID integrity, and WORM audit log retention structures.)*
+          #### 3.5 Design Constraints
+          *(Specify regulatory compliance standards, encryption algorithms like AES-256/TLS 1.3, and hosting boundaries.)*
+          #### 3.6 Software System Quality Attributes
+          *(Detail security, auditability, reliability, maintainability, and non-repudiation attributes.)*
+          #### 3.7 Object-Oriented Models
+          *(Provide structured textual specifications for: (a) Primary Use Cases with actors, preconditions, main flow, and exception flows; and (b) Loan Application State Transition lifecycle from submission to final decision/disbursement.)*
+
+          ### Appendices
+          #### Appendix A: Requirements Traceability Matrix (RTM)
+          *(Render the complete, finalized 3-column Markdown table `| Requirement ID | Category | Short Description |` grouped strictly by FR, NFR, EI, and CON.)*
+        """
         agent2_system_instruction = f"""
         You are a Senior Software Architect and SDLC Selection Expert.
         
@@ -301,22 +362,32 @@ if st.button("🚀 Finalize Requirements & Deduce SDLC Model (Agent 2)", disable
           *(Provide 5 bullet points comparing the recommended model against each of the other 5 models based on the observations in the matrix above. Format every bullet strictly with bold lead-ins like: `- **Superiority over [Model Name]:** [Explanation]`)*
         """
 
-        agent2_prompt = f"Analyze these finalized software requirements from Agent 1:\n---\n{st.session_state.final_srs}\n---"
-
-        with st.spinner("Agent 2 Evaluating Requirements against Decision Criteria..."):
+        with st.spinner("Compiling IEEE 830 SRS (Agent 1) & Evaluating SDLC Model (Agent 2)..."):
             try:
                 client = genai.Client(api_key=api_key)
-                agent2_response = call_gemini_resilient(client, agent2_prompt, agent2_system_instruction)
 
+                compile_prompt = f"Compile the complete IEEE 830-1998 SRS from these gathered requirements:\n---\n{st.session_state.final_srs}\n---"
+                compiled_srs = call_gemini_resilient(client, compile_prompt, agent1_compile_instruction)
+                st.session_state.ieee_srs = compiled_srs
+                log_to_db("Agent_1_IEEE830_Compiler", compile_prompt, compiled_srs)
+
+                agent2_prompt = f"Analyze this finalized IEEE 830-1998 SRS from Agent 1:\n---\n{compiled_srs}\n---"
+                agent2_response = call_gemini_resilient(client, agent2_prompt, agent2_system_instruction)
+                
                 st.session_state.sdlc_result = agent2_response
                 st.session_state.is_finalized = True
                 log_to_db("Agent_2_SDLC_Engine", agent2_prompt, agent2_response)
-                save_artifact_to_db(st.session_state.final_srs, agent2_response)
+                save_artifact_to_db(compiled_srs, agent2_response)
                 st.rerun()
 
             except Exception as e:
                 st.error(f"Execution Error: {e}")
 
+if st.session_state.ieee_srs:
+    with st.expander("📄 Finalized IEEE 830-1998 Software Requirements Specification (SRS)", expanded=False):
+        st.markdown(st.session_state.ieee_srs)
+
 if st.session_state.sdlc_result:
-    st.markdown(st.session_state.sdlc_result)
-    st.success("SDLC Evaluation complete! Session artifacts and audit logs saved to 'se_project.db'.")
+    with st.expander("✅ Suitable SDLC Model Selection & Justification", expanded=False):
+        st.markdown(st.session_state.sdlc_result)
+    st.success("IEEE 830 SRS & SDLC Evaluation complete! Session artifacts and audit logs saved to 'se_project.db'.")
