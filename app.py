@@ -10,7 +10,7 @@ from google.genai import types
 st.set_page_config(
     page_title="Agentic AI Requirements & SDLC Engine",
     layout="wide",
-    page_icon="🏦"
+    page_icon=""
 )
 st.markdown("""
     <style>
