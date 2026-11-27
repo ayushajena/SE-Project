@@ -10,7 +10,7 @@ SDLC selection evaluates four core project characteristic categories:
   D. Project Type & Risk (New product direction vs. enhancement, system integration complexity, funding stability, expected product longevity in the organization)
 
 --------------------------------------------------------------------------------
-2. CANONICAL SDLC SELECTION DECISION RULES (6 ALLOWED MODELS)
+2. CANONICAL SDLC SELECTION DECISION RULES (7 ALLOWED MODELS)
 --------------------------------------------------------------------------------
 
 1. Waterfall Model
@@ -36,3 +36,7 @@ SDLC selection evaluates four core project characteristic categories:
 6. Spiral Model
 - Criteria Profile: Requirements are unclear early, change frequently, and require prototypes/proof-of-concept. Team is new to problem domain, technology, and tools with no training and high reassignment risk. Represents a new product direction with unstable/phased funding, system integration complexity, and high risk.
 - Decision Rule: Best when high technical/business uncertainty requires continuous, phase-by-phase quantitative risk analysis and iterative prototyping.
+
+7. Agile Methodology (Scrum / XP)
+- Criteria Profile: Requirements are dynamic, evolve iteratively across short sprints (2 weeks), and rely on lightweight user stories rather than comprehensive upfront SRS documentation. Team is small (7–9 members), cross-functional, self-organizing, and co-located with continuous integration. Users (Product Owner / on-site customer) are continuously available for rapid sprint feedback. Best for short-to-medium lifecycle commercial products where rapid incremental delivery outweighs heavy regulatory documentation or formal phase-gate verification.
+- Decision Rule: Best when high requirement volatility and need for rapid customer feedback favor continuous iteration and working software over formal upfront IEEE 830 specifications and strict regulatory verification gates.

@@ -336,6 +336,7 @@ if st.button("🔴 Compile SRS (Agent 1) & Deduce SDLC Model (Agent 2)", disable
         4. Incremental / Iterative Model
         5. Rapid Application Development (RAD)
         6. Spiral Model
+        7. Agile Methodology
 
         Grounded SDLC Selection Decision Rules (Knowledge Base RAG):
         ---
@@ -356,10 +357,10 @@ if st.button("🔴 Compile SRS (Agent 1) & Deduce SDLC Model (Agent 2)", disable
           In the right column, summarize the concrete observations derived from Agent 1's FRs, NFRs, EIs, and CONs.)*
 
           ### Recommended SDLC Model
-          **[Exact Model Name from the 6 allowed models]**
+          **[Exact Model Name from the 7 allowed models]**
 
           ### Software Engineering Justification
-          *(Provide 5 bullet points comparing the recommended model against each of the other 5 models based on the observations in the matrix above. Format every bullet strictly with bold lead-ins like: `- **Superiority over [Model Name]:** [Explanation]`)*
+          *(Provide 6 bullet points comparing the recommended model against each of the other 6 models based on the observations in the matrix above. Format every bullet strictly with bold lead-ins like: `- **Superiority over [Model Name]:** [Explanation]`)*
         """
 
         with st.spinner("Compiling IEEE 830 SRS (Agent 1) & Evaluating SDLC Model (Agent 2)..."):
