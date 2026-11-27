@@ -243,6 +243,7 @@ if user_input and not st.session_state.is_finalized:
                 try:
                     client = genai.Client(api_key=api_key)
                     agent1_response = call_gemini_resilient(client, chat_context, agent1_system_instruction)
+                    agent1_response += "\n\n> *Note: You do not need to answer these specific questions; feel free to introduce any additional requirements or constraints you missed in earlier turns.*"
                     st.markdown(agent1_response)
 
                     st.session_state.messages.append({"role": "assistant", "content": agent1_response})
